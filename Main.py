@@ -8,12 +8,15 @@ bot = Client(
     bot_token = config.BOT_TOKEN,
     name = "Klombo_bot"
 )
+
 def button_filter(button):
    async def func(_, __, msg):
        return msg.text == button.text
    return filters.create(func, "ButtonFilter", button=button)
 
-@bot.on_message(filters.command("quest"), button_filter(keyboards.btn_aventura))
+
+
+@bot.on_message(filters.command("quest")| button_filter(keyboards.btn_aventura))
 async def quest(bot,message):
     await message.reply("Te gustaria empezar una aventura legendaria?",reply_markup = keyboards.inLine_kb_start_quest)
 
@@ -23,20 +26,20 @@ async def handle_query(bot,query):
     if query.data == "start_quest":
         await bot.answer_callback_query(query.id,text = "¡Bienvenido a la mision llamada busqueda del tesoro!",show_alert = True)
         await query.message.reply_text("Estas parado en frente de dos puertas,cual eliges",reply_markup=keyboards.inline_kb_button_choise_desicion)
-    elif query.data == "puerta izquierda":
-        await query.message.reply.text("Entras a una habitacion oscura y ves un dragon, que haras?",reply_markup=keyboards.inline_kb_button_puerta_izquierda)
-        if query.data == "dragon":
-            await bot.answer_callback_query(query.id, text="Luchas contra el dragon, pero el es mas fuerte que tu y te come")
-        elif query.data == "run":
-            await bot.answer_callback_query(query.id,text = "Intentas escapar, pero el dragon te alcanza y te come")
-    elif query.data == "puerta derecha":
-        await query.message.reply.text("¡Entras en una habitacion llena de tesoros! Elige solo uno",reply_markup=keyboards.inline_kb_button_puerta_derecha)
-        if query.data == "gold_crown":
-            await bot.answer_callback_query(query.id, text = "Tomas la corona dorada y sales de la habitacion, Felicitaciones, ganaste!")
-        elif query.data == "silver dagger":
-            await bot.answer_callback_query(query.id, text="Tomas la daga plateada y sales de la habitacion. Lastimosamente no vale nada!")
-        elif query.data == "old_book":
-            await bot.answer_callback_query(query.id, text="Tomas el libro viejo y sales de la habitacion. Resulta que el libro es magico, lo abres y desapareces")
+    elif query.data == "Puerta izquierda":
+        await query.message.reply_text("Entras a una habitacion oscura y ves un dragon, que haras?",reply_markup=keyboards.inline_kb_button_puerta_izquierda)
+    elif query.data == "Dragon":
+        await bot.answer_callback_query(query.id, text="Luchas contra el dragon, pero el es mas fuerte que tu y te come",show_alert = True)
+    elif query.data == "Correr":
+        await bot.answer_callback_query(query.id,text = "Intentas escapar, pero el dragon te alcanza y te come",show_alert = True)
+    elif query.data == "Puerta derecha":
+        await query.message.reply_text("¡Entras en una habitacion llena de tesoros! Elige solo uno",reply_markup=keyboards.inline_kb_button_puerta_derecha)
+    elif query.data == "Corona dorada":
+        await bot.answer_callback_query(query.id, text = "Tomas la corona dorada y sales de la habitacion, Felicitaciones, ganaste!",show_alert = True)
+    elif query.data == "Daga":
+        await bot.answer_callback_query(query.id, text="Tomas la daga plateada y sales de la habitacion. Lastimosamente no vale nada!",show_alert = True)
+    elif query.data == "Libro":
+        await bot.answer_callback_query(query.id, text="Tomas el libro viejo y sales de la habitacion. Resulta que el libro es magico, lo abres y desapareces",show_alert = True)
         
          
 @bot.on_message(filters.command("start") | button_filter(keyboards.btn_atras))

@@ -42,15 +42,15 @@ kb_Ppt = ReplyKeyboardMarkup(
 )
 #Aqui iran todos los teclados que tengan que ver con el boton aventura
 
-inline_kb_button_choise_desicion = InlineKeyboardButton([
+inline_kb_button_choise_desicion = InlineKeyboardMarkup([
     [InlineKeyboardButton("Puerta izquierda 🚪⬅️", callback_data="Puerta izquierda")],
     [InlineKeyboardButton("Puerta derecha ➡️🚪", callback_data="Puerta derecha")]
 ])
-inline_kb_button_puerta_izquierda = InlineKeyboardButton([
+inline_kb_button_puerta_izquierda = InlineKeyboardMarkup([
     [InlineKeyboardButton("🐉Lucha con el dragon", callback_data="Dragon")],
     [InlineKeyboardButton("🏃Intenta escapar",callback_data="Correr")]
 ])
-inline_kb_button_puerta_derecha = InlineKeyboardButton([
+inline_kb_button_puerta_derecha = InlineKeyboardMarkup([
     [InlineKeyboardButton("👑Corona dorada",callback_data="Corona dorada")],
     [InlineKeyboardButton("🗡️Daga de plata",callback_data="Daga")],
     [InlineKeyboardButton("📕Libro Viejp", callback_data="Libro")]
