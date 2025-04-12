@@ -10,13 +10,15 @@ boton_info = KeyboardButton(f"{emoji.INFORMATION} Info")
 boton_juego = KeyboardButton(f"{emoji.VIDEO_GAME} Juegos")
 boton_perfil = KeyboardButton(f"{emoji.PERSON} Perfil")
 boton_time = KeyboardButton(f"{emoji.TIMER_CLOCK} Hora")
+boton_generate_AI = KeyboardButton(f"{emoji.CAMERA} Generar imagen")
 
 kb_main = ReplyKeyboardMarkup(
     keyboard = [
-        [boton_info,boton_juego,boton_perfil,boton_time]
+        [boton_info,boton_juego,boton_perfil,boton_time,boton_generate_AI]
     ],
     resize_keyboard=True
 )
+
 
 btn_game = KeyboardButton(f"{emoji.ROCK}{emoji.PAGE_FACING_UP}{emoji.SCISSORS} Piedra,papel o tijeras")
 btn_aventura = KeyboardButton(f"{emoji.WORLD_MAP}Aventura")

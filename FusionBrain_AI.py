@@ -1,7 +1,7 @@
 import requests,asyncio,config,json;
 
 HEADERS = {
-    "X-key":f"{config.API_KEY}",
+    "X-Key":f"{config.API_KEY}",
     "X-Secret" : f"{config.SECRET_KEY}"
 }
 
@@ -19,7 +19,7 @@ async def generate(prompt):
         "mode_id": (None , 4),
         "params" : (None, json.dumps(params), "application/json")
     }
-    
+    response = requests.post(URL + "key/api/v1/text2image/run/", headers=HEADERS,files=files)
     data = response.json()
     attempts = 0
     

@@ -1,6 +1,7 @@
 from pyrogram import Client,filters
 import config,datetime,keyboards,random,json
 from FusionBrain_AI import generate
+import base64
 
 bot = Client(
     api_id = config.API_ID,
@@ -14,15 +15,35 @@ def button_filter(button):
        return msg.text == button.text
    return filters.create(func, "ButtonFilter", button=button)
 
+@bot.on_message(filters.command("image"))
 
+async def image(bot,message):
+    if len(message.text.split()) > 1:
+        await message.reply("Que imagen desea generar, por favor describala")
+        query = message.text.replace("/image","")
+        await message.reply(f"generando una imagen de {query}")
+        await message.reply("Por favor espera un momento")
+        images = await generate(query)
+        print(images)
+        if images:
+            image_data = base64.b64decode(images[0])
+            img_num = random.randint(1,99)
+            with open(f"image{img_num}.jpg","wb") as file:
+                file.write(image_data)
+            await bot.send_photo(message.chat.id,f"images/{img_num}image.jpg",reply_to_message_id=message.message_id)
+    else:
+        await message.reply("Porfavor, ingrese una instruccion correcta")
+        
+            
+        
 
 @bot.on_message(filters.command("quest")| button_filter(keyboards.btn_aventura))
 async def quest(bot,message):
-    await message.reply("Te gustaria empezar una aventura legendaria?",reply_markup = keyboards.inLine_kb_start_quest)
+    await message.reply_text("Te gustaria empezar una aventura legendaria?",reply_markup = keyboards.inLine_kb_start_quest)
 
 @bot.on_callback_query()
 async def handle_query(bot,query):
-    await query.message.delete()
+    #await query.message.delete()
     if query.data == "start_quest":
         await bot.answer_callback_query(query.id,text = "¡Bienvenido a la mision llamada busqueda del tesoro!",show_alert = True)
         await query.message.reply_text("Estas parado en frente de dos puertas,cual eliges",reply_markup=keyboards.inline_kb_button_choise_desicion)
@@ -40,11 +61,11 @@ async def handle_query(bot,query):
         await bot.answer_callback_query(query.id, text="Tomas la daga plateada y sales de la habitacion. Lastimosamente no vale nada!",show_alert = True)
     elif query.data == "Libro":
         await bot.answer_callback_query(query.id, text="Tomas el libro viejo y sales de la habitacion. Resulta que el libro es magico, lo abres y desapareces",show_alert = True)
-        
+    else:
+        await query.message.reply_text("Opción no válida, por favor intenta de nuevo.")
          
 @bot.on_message(filters.command("start") | button_filter(keyboards.btn_atras))
 async def start(bot,message):
-    
     await message.reply("¡Bienvenido!",reply_markup = keyboards.kb_main)
     with open("users.json","r")as file:
         users = json.load(file)
@@ -76,6 +97,10 @@ async def escoger_opcion(bot,message):
         await message.reply("Bienvenido a piedra, papel o tijeras, escoge una opcion",reply_markup = keyboards.kb_Ppt)
     else:
         await message.reply(f"Fondos insuficientes {users[str(message.from_user.id)]},")
+        
+@bot.on_message(filters.command("generate") | button_filter(keyboards.boton_generate_AI))
+async def generate_image(bot,message):
+    await message.reply("Porfavor, ingrese el texto que desea convertir en imagen")
         
 @bot.on_message(button_filter(keyboards.btn_piedra)| 
                 button_filter(keyboards.btn_papel) | 
